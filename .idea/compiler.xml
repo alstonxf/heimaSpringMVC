@@ -8,10 +8,12 @@
         <outputRelativeToContentRoot value="true" />
         <module name="springmvc_02_bean_load" />
         <module name="springmvc_01_quickstart" />
+        <module name="springmvc_03_request_mapping" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="heimaSpringMVC" target="1.5" />
+      <module name="springmvc_03_request_mapping (1)" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
