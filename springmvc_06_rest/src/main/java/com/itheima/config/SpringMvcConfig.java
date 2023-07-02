@@ -14,10 +14,9 @@ import java.util.List;
 //设定SpringMVC加载对应的bean
 @Configuration //注意 被Configuration注释的类会被扫描，同时其bean也会被加载。
 @ComponentScan( value = "com.itheima.controller")
-@EnableWebMvc //重点：启用JSON数据类型的自动转换
+@EnableWebMvc //重点：启用JSON数据类型的自动转换等功能
 public class SpringMvcConfig {
 }
-
 
 //或者手动重写转换器
 //@Configuration

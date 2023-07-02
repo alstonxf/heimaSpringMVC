@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="springmvc_05_response" />
+        <module name="springmvc_07_rest_case" />
         <module name="springmvc_02_bean_load" />
         <module name="springmvc_01_quickstart" />
         <module name="springmvc_03_request_mapping" />

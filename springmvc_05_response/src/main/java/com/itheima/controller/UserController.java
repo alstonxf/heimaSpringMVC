@@ -18,7 +18,16 @@ public class UserController {
     //响应页面/跳转页面
     public String toJumpPage(){
         System.out.println(LocalDateTime.now()+" 跳转页面 ...");
-        return "page.jsp";
+//        return "page.jsp"; 就是根目录
+        return "/page.jsp";
+    }
+
+    @RequestMapping("/toJumpPage1") //前缀加上/save 即 /user/save
+    //响应页面/跳转页面
+    public String toJumpPage1(){
+        System.out.println(LocalDateTime.now()+" 跳转页面1 ...");
+//        return "page.jsp"; 就是根目录
+        return "web1/page1.jsp";
     }
 
     @RequestMapping("/toText")

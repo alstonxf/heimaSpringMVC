@@ -2,8 +2,11 @@ package com.itheima.config;
 
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
+
+import javax.servlet.Filter;
 
 //将tomcat容器与springMVC容器关联，使得tomcat容器可以访问到springMVC容器。体现在代码上就是WebApplicationContext容器
 //初始化Servlet容器，加载SpringMVC环境，并设置SpringMVC请求拦截的路径
@@ -48,6 +51,14 @@ public class ServletContainersInitConfig extends AbstractAnnotationConfigDispatc
     @Override
     protected String[] getServletMappings() {
         return new String[]{"/"};
+    }
+
+    //POST 时乱码处理
+    @Override
+    protected Filter[] getServletFilters() {
+        CharacterEncodingFilter filter = new CharacterEncodingFilter();
+        filter.setEncoding("UTF-8");
+        return new Filter[]{filter};
     }
 }
 
