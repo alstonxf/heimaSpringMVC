@@ -29,9 +29,9 @@ public class BookServiceImpl implements BookService {
     }
 
     public Book getById(Integer id) {
-        if(id == 1){
-            throw new BusinessException(Code.BUSINESS_ERR,"请不要使用你的技术挑战我的耐性!");
-        }
+//        if(id == 1){
+//            throw new BusinessException(Code.BUSINESS_ERR,"请不要使用你的技术挑战我的耐性!");
+//        }
 //        //将可能出现的异常进行包装，转换成自定义异常
 //        try{
 //            int i = 1/0;
