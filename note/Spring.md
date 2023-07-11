@@ -2591,7 +2591,7 @@ pom.xml中添加依赖
             http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans.xsd">
 	<!--管理DruidDataSource对象-->
-    <bean class="com.alibaba.druid.pool.DruidDataSource">
+    <bean id = "dataSource" class="com.alibaba.druid.pool.DruidDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/spring_db"/>
         <property name="username" value="root"/>
@@ -3009,7 +3009,7 @@ public class App {
 
   本节主要讲解的是properties配置文件的加载，需要掌握的内容有:
 
-  * 如何开启`context`命名空间
+  * 如何==开启`context`命名空间==
 
     ![1629980280952](Spring.assets/1629980280952.png)
 
@@ -3129,7 +3129,7 @@ ApplicationContext ctx = new FileSystemXmlApplicationContext("D:\\workspace\\spr
 
 这种方式虽能实现，但是当项目的位置发生变化后,代码也需要跟着改,耦合度较高,不推荐使用。
 
-#### 2.2.2 Bean的三种获取方式
+#### 2.2.2 <font color=blue>Bean的三种获取方式</font>>
 
 方式一，就是目前案例中获取的方式:
 
@@ -3153,7 +3153,7 @@ BookDao bookDao = ctx.getBean("bookDao"，BookDao.class);
 BookDao bookDao = ctx.getBean(BookDao.class);
 ```
 
-这种方式就类似我们之前所学习依赖注入中的按类型注入。必须要确保IOC容器中该类型对应的bean对象只能有一个。
+==这种方式就类似我们之前所学习依赖注入中的按类型注入。必须要确保IOC容器中该类型对应的bean对象只能有一个。==
 
 #### 2.2.3 容器类层次结构
 
@@ -3596,15 +3596,15 @@ public class AppForAnnotation {
 | 作用 | 设置spring配置类扫描路径，用于加载使用注解格式定义的bean |
 | 属性 | value（默认）：扫描路径，此路径可以逐层向下扫描          |
 
-**小结:**
+#### ==**小结:**==
 
-这一节重点掌握的是使用注解完成Spring的bean管理，需要掌握的内容为:
+==这一节重点掌握的是使用注解完成Spring的bean管理，需要掌握的内容为:==
 
-* 记住@Component、@Controller、@Service、@Repository这四个注解
-* applicationContext.xml中`<context:component-san/>`的作用是指定扫描包路径，注解为@ComponentScan
-* @Configuration标识该类为配置类，使用类替换applicationContext.xml文件
-* ClassPathXmlApplicationContext是加载XML配置文件
-* AnnotationConfigApplicationContext是加载配置类
+* ==记住@Component、@Controller、@Service、@Repository这四个注解==
+* ==applicationContext.xml中`<context:component-scan/>`的作用是指定扫描包路径，注解为@ComponentScan==
+* ==@Configuration标识该类为配置类，使用类替换applicationContext.xml文件==
+* ==ClassPathXmlApplicationContext是加载XML配置文件==
+* ==AnnotationConfigApplicationContext是加载配置类==
 
 ### 3.3 注解开发bean作用范围与生命周期管理
 
@@ -3724,7 +3724,7 @@ public class BookDaoImpl implements BookDao {
 
 (2)如何对方法进行标识，哪个是初始化方法，哪个是销毁方法?
 
-只需要在对应的方法上添加`@PostConstruct`和`@PreDestroy`注解即可。
+==只需要在对应的方法上添加`@PostConstruct`和`@PreDestroy`注解即可。==
 
 ```java
 @Repository
@@ -3793,13 +3793,13 @@ public class App {
 | 作用 | 设置该方法为销毁方法 |
 | 属性 | 无                   |
 
-**小结**
+#### ==**小结**==
 
 ![1630033039358](Spring.assets/1630033039358.png)
 
 ### 3.4 注解开发依赖注入
 
-Spring为了使用注解简化开发，并没有提供`构造函数注入`、`setter注入`对应的注解，只提供了自动装配的注解实现。
+==Spring为了使用注解简化开发，并没有提供`构造函数注入`、`setter注入`对应的注解，<font color=red>只提供了自动装配的注解实现(默认使用匹配类型，在Qualifier注解上改用name匹配)。</font>>==
 
 #### 3.4.1 环境准备
 
@@ -3900,16 +3900,16 @@ public class BookServiceImpl implements BookService {
 }
 ```
 
-**注意:**
+**==注意:**==
 
-* @Autowired可以写在属性上，也可也写在setter方法上，最简单的处理方式是`写在属性上并将setter方法删除掉`
-* 为什么setter方法可以删除呢?
-  * 自动装配基于反射设计创建对象并通过暴力反射为私有属性进行设值
-  * 普通反射只能获取public修饰的内容
-  * 暴力反射除了获取public修饰的内容还可以获取private修改的内容
-  * 所以此处无需提供setter方法
+* ==@Autowired可以写在属性上，也可也写在setter方法上，最简单的处理方式是`写在属性上并将setter方法删除掉`==
+* ==为什么setter方法可以删除呢?==
+  * ==自动装配基于反射设计创建对象并通过暴力反射为私有属性进行设值==
+  * ==普通反射只能获取public修饰的内容==
+  * ==暴力反射除了获取public修饰的内容还可以获取private修改的内容==
+  * ==所以此处无需提供setter方法==
 
-(2)@Autowired是按照类型注入，那么对应BookDao接口如果有多个实现类，比如添加BookDaoImpl2
+(2==)@Autowired是按照类型注入，那么对应BookDao接口如果有多个实现类，比如添加BookDaoImpl2==
 
 ```java
 @Repository
@@ -3973,7 +3973,7 @@ public class BookServiceImpl implements BookService {
 }
 ```
 
-@Qualifier注解后的值就是需要注入的bean的名称。
+==@Qualifier注解后的值就是需要注入的bean的名称。==
 
 ==注意:@Qualifier不能独立使用，必须和@Autowired一起使用==
 
@@ -4207,11 +4207,14 @@ public class SpringConfig {
 
 #### 步骤3:在方法上添加`@Bean`注解
 
-@Bean注解的作用是将方法的返回值制作为Spring管理的一个bean对象
+==@Bean注解的作用是将方法的返回值制作为Spring管理的一个bean对象==
+
+(@[Component](https://so.csdn.net/so/search?q=Component&spm=1001.2101.3001.7020) 注解作用于类，而 @Bean 注解作用于方法、)
 
 ```java
 @Configuration
-public class SpringConfig {
+public class SpringConfig {、
+    
 	@Bean
     public DataSource dataSource(){
         DruidDataSource ds = new DruidDataSource();
