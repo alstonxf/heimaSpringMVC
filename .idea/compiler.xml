@@ -14,6 +14,7 @@
         <module name="springmvc_07_rest_case" />
         <module name="spring_12_annotation_bean_manager" />
         <module name="spring_06_di_constructor" />
+        <module name="spring_test" />
         <module name="spring_07_di_autoware" />
         <module name="spring_18_aop_quickstart" />
         <module name="spring_20_aop_advice_type" />
