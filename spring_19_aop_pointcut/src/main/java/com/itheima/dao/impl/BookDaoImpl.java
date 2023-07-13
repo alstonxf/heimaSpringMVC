@@ -8,7 +8,11 @@ import org.springframework.stereotype.Repository;
 public class BookDaoImpl implements BookDao {
 
     public void save() {
-        System.out.println("book dao save ...");
+        //业务执行万次
+        for (int i = 0;i<10000;i++) {
+//            System.out.println("book dao save ...");
+        }
+        System.out.println("book dao save ..." + BookDaoImpl.class.getName());
     }
 
     public void update(){

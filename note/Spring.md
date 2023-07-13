@@ -5078,7 +5078,7 @@ public class BookDaoImpl implements BookDao {
 这个时候，我们就应该有些疑问?
 
 * 对于计算万次执行消耗的时间只有save方法有，为什么delete和update方法也会有呢?
-* delete和update方法有，那什么select方法为什么又没有呢?
+* delete和update方法有，那select方法为什么又没有呢?
 
 这个案例中其实就使用了Spring的AOP，在不惊动(改动)原有设计(代码)的前提下，想给谁添加功能就给谁添加。这个也就是Spring的理念：
 
@@ -5088,13 +5088,13 @@ public class BookDaoImpl implements BookDao {
 
 ![1630144353462](Spring.assets/1630144353462.png)
 
-(1)前面一直在强调，Spring的AOP是对一个类的方法在不进行任何修改的前提下实现增强。对于上面的案例中BookServiceImpl中有`save`,`update`,`delete`和`select`方法,这些方法我们给起了一个名字叫==连接点==
+(1)前面一直在强调，Spring的AOP是对一个类的方法在不进行任何修改的前提下实现增强。对于上面的案例中BookServiceImpl中有`save`,`update`,`delete`和`select`方法,**这些方法我们给起了一个名字叫==连接点==**
 
-(2)在BookServiceImpl的四个方法中，`update`和`delete`只有打印没有计算万次执行消耗时间，但是在运行的时候已经有该功能，那也就是说`update`和`delete`方法都已经被增强，所以对于需要增强的方法我们给起了一个名字叫==切入点==
+(2)在BookServiceImpl的四个方法中，`update`和`delete`只有打印没有计算万次执行消耗时间，但是在运行的时候已经有该功能，那也就是说`update`和`delete`方法都已经被增强，所以**对于需要增强的方法我们给起了一个名字叫==切入点==**
 
-(3)执行BookServiceImpl的update和delete方法的时候都被添加了一个计算万次执行消耗时间的功能，将这个功能抽取到一个方法中，换句话说就是存放共性功能的方法，我们给起了个名字叫==通知==
+(3)执行BookServiceImpl的update和delete方法的时候都被添加了一个计算万次执行消耗时间的功能，将这个功能抽取到一个方法中，换句话说就是**存放共性功能的方法，我们给起了个名字叫==通知==**
 
-(4)通知是要增强的内容，会有多个，切入点是需要被增强的方法，也会有多个，那哪个切入点需要添加哪个通知，就需要提前将它们之间的关系描述清楚，那么对于通知和切入点之间的关系描述，我们给起了个名字叫==切面==
+(4)通知是要增强的内容，会有多个，切入点是需要被增强的方法，也会有多个，那哪个切入点需要添加哪个通知，就需要提前将它们之间的关系描述清楚，那么**对于通知和切入点之间的关系描述，我们给起了个名字叫==切面==**
 
 (5)通知是一个方法，方法不能独立存在需要被写在一个类中，这个类我们也给起了个名字叫==通知类==
 
@@ -5137,21 +5137,21 @@ public class BookDaoImpl implements BookDao {
 
 因为现在注解使用的比较多，所以本次课程就采用注解完成AOP的开发。
 
-总结需求为:使用SpringAOP的注解方式完成在方法执行的前打印出当前系统时间。
+总结需求为:使用SpringAOP的注解方式完成在方法执行前打印出当前系统时间。
 
 ### 2.2 思路分析
 
 需求明确后，具体该如何实现，都有哪些步骤，我们先来分析下:
 
-> 1.导入坐标(pom.xml)
+> ==1.导入坐标(pom.xml)==
 >
-> 2.制作连接点(原始操作，Dao接口与实现类)
+> ==2.制作连接点(原始操作，Dao接口与实现类)==
 >
-> 3.制作共性功能(通知类与通知)
+> ==3.制作共性功能(通知类与通知)==
 >
-> 4.定义切入点
+> ==4.定义切入点==
 >
-> 5.绑定切入点与通知关系(切面)
+> ==5.绑定切入点与通知关系(切面)==
 
 ### 2.3 环境准备
 
@@ -5269,8 +5269,10 @@ BookDaoImpl中有两个方法，分别是save和update，我们要增强的是up
 
 ```java
 public class MyAdvice {
+    // 步骤4:定义切入点
     @Pointcut("execution(void com.itheima.dao.BookDao.update())")
     private void pt(){}
+    
     public void method(){
         System.out.println(System.currentTimeMillis());
     }
@@ -5304,7 +5306,9 @@ public class MyAdvice {
 
 **说明:**@Before翻译过来是之前，也就是说通知会在切入点方法执行之前执行，除此之前还有其他四种类型，后面会讲。
 
-#### 步骤6:将通知类配给容器并标识其为切面类
+#### 步骤6:将通知类配给容器并标识其为切面类 
+
+在通知类上添加@Component 和 @Aspect 的注解。
 
 ```java
 @Component
@@ -5320,7 +5324,7 @@ public class MyAdvice {
 }
 ```
 
-#### 步骤7:开启注解格式AOP功能
+#### 步骤7:开启注解格式AOP功能 （@EnableAspectJAutoProxy）
 
 ```java
 @Configuration
