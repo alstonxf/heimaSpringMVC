@@ -7116,7 +7116,7 @@ AOP的知识就已经讲解完了，接下来对于AOP的知识进行一个总�
   - ==抛出异常后通知==
   - ==环绕通知==
 
-## 6，AOP事务管理
+## 6.AOP事务管理
 
 ### 6.1 Spring事务简介
 
@@ -7157,6 +7157,7 @@ PlatformTransactionManager只是一个接口，Spring还为其提供了一个具
 需求微缩: A账户减钱，B账户加钱
 
 为了实现上述的业务需求，我们可以按照下面步骤来实现下:
+
 ①：数据层提供基础操作，指定账户减钱（outMoney），指定账户加钱（inMoney）
 
 ②：业务层提供转账操作（transfer），调用减钱与加钱的操作
@@ -7447,7 +7448,7 @@ public class AccountServiceImpl implements AccountService {
 
 ==注意:==
 
-@Transactional可以写在接口类上、接口方法上、实现类上和实现类方法上
+**@Transactional可以写在接口类上、接口方法上、实现类上和实现类方法上**
 
 * 写在接口类上，该接口的所有实现类的所有方法都会有事务
 * 写在接口方法上，该接口的所有实现类的该方法都会有事务
@@ -7619,11 +7620,13 @@ public class SpringConfig {
       }
       ```
 
-* 出现这个问题的原因是，Spring的事务只会对`Error异常`和`RuntimeException异常`及其子类进行事务回顾，其他的异常类型是不会回滚的，对应IOException不符合上述条件所以不回滚
-      
+* 出现这个问题的原因是，==Spring的事务默认只会对`Error异常`和`RuntimeException异常`及其子类进行事务回顾，其他的异常类型是不会回滚的，对应IOException不符合上述条件所以不回滚==
+  ====    
 
-  * 此时就可以使用rollbackFor属性来设置出现IOException异常不回滚
+  * ==此时就可以使用rollbackFor属性来设置出现IOException异常不回滚==
 
+     @Transactional(rollbackFor = {IOException.class})
+    
     ```java
     @Service
     public class AccountServiceImpl implements AccountService {
@@ -7642,7 +7645,7 @@ public class SpringConfig {
     
     }
     ```
-
+  
 * rollbackForClassName等同于rollbackFor,只不过属性为异常的类全名字符串
 
 * noRollbackForClassName等同于noRollbackFor，只不过属性为异常的类全名字符串
@@ -7654,6 +7657,18 @@ public class SpringConfig {
   * READ_COMMITTED : 读已提交
   * REPEATABLE_READ : 重复读取
   * SERIALIZABLE: 串行化
+
+isolation设置事务的隔离级别是指在数据库管理系统中通过设置该参数来指定事务所采用的隔离级别。不同的数据库系统可能具有不同的参数名称和取值范围，但通常会提供类似于您提到的选项。
+
+以下是对每个选项的解释：
+
+1. DEFAULT（默认隔离级别）：这个选项会采用数据库默认的隔离级别。每个数据库系统都有其自己的默认级别，可以是任意一个隔离级别（如读已提交或可重复读）或者系统默认值（如数据库的默认隔离级别）。
+2. READ_UNCOMMITTED（读未提交）：这个隔离级别最低，允许一个事务读取到另一个事务尚未提交的数据。它可能导致脏读（Dirty Read），即读取到了未经验证的数据。
+3. READ_COMMITTED（读已提交 **常用**）：这个隔离级别要求一个事务只能读取到已经提交的数据。这样可以避免脏读，但仍可能出现不可重复读（Non-Repeatable Read）问题，即同一个事务中的两个相同查询在不同时间点返回不同的结果。
+4. REPEATABLE_READ（重复读取 **常用**）：这个隔离级别确保在同一个事务中多次读取同样的数据时，结果始终一致。它可以避免脏读和不可重复读问题，但仍可能出现幻读（Phantom Read）问题，即在同一个事务中多次查询返回不同的结果集。
+5. SERIALIZABLE（串行化）：这个隔离级别最高，完全隔离事务。它通过对事务进行串行执行来避免脏读、不可重复读和幻读问题，但也导致了最高的并发性能损失。
+
+通过设置isolation参数，您可以明确指定事务的隔离级别，以满足应用程序的特定需求。选择合适的隔离级别需要综合考虑应用程序的并发性能需求、数据一致性要求以及可能出现的数据访问冲突情况。
 
 介绍完上述属性后，还有最后一个事务的传播行为，为了讲解该属性的设置，我们需要完成下面的案例。
 
@@ -7778,6 +7793,8 @@ public class AccountServiceImpl implements AccountService {
 事务传播行为：事务协调员对事务管理员所携带事务的处理态度。
 
 具体如何解决，就需要用到之前我们没有说的`propagation属性`。
+
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 
 ##### 1.修改logService改变事务的传播行为
 
